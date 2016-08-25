@@ -51,6 +51,7 @@
                   %ns2:type
                     %ns2:text= email[:email_type].strip
                 %ns2:text= email[:email_address].strip
+              - break
       %ns1:exchange_id= broker_role[:npn].strip
       %ns1:exchange_status= "ACTIVE"
-      %ns1:exchange_version= "1"
+      %ns1:exchange_version= "15"

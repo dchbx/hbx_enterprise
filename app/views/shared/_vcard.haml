@@ -6,7 +6,7 @@
   %ns2:org= organization[:name]
   - if person[:addresses].present?
     - person[:addresses].each do |address|
-      next if address[:type] != 'work'
+      - next if address[:type] != 'work'
       %ns2:adr
         %ns2:parameters
           %ns2:type
@@ -62,3 +62,4 @@
         %ns2:type
           %ns2:text= email[:email_type]
       %ns2:text= email[:email_address]
+    - break
