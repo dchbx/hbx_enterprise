@@ -40,29 +40,29 @@ module Proxies
       last_name = data["last_name"]
       email = data["email"]
       password = data["password"]
-      system_flag = data["system_flag"]
+      system_flag = data["system_flag"] 
       account_role = data["account_role"]
       user_name = data["username"]
       user_name ||= data["email"]
       account_role_key = account_role.blank? ? "individual" : account_role
       user_role = USER_ROLE_MAPPING.fetch(account_role_key, INDIVIDUAL_ROLE_URI)
       system_flag_value = system_flag.blank? ? "1" : system_flag
-      builder = Nokogiri::XML::Builder.new do |xml|
-        xml["acn"].create_user_request("xmlns:acn" => ACCOUNT_NS) do |xml|
-          xml["acn"].create_user_properties do |xml|
-            xml["acn"].user_role(user_role)
-            xml["acn"].first_name(first_name)
-            xml["acn"].last_name(last_name)
-            xml["acn"].user_name(user_name)
-            xml["acn"].Password(password)
-            xml["acn"].system_flag(system_flag_value)
-            if !email.blank?
-              xml["acn"].email(email)
-            end
-          end
-        end
+      uri = URI('http://ec2-52-5-17-62.compute-1.amazonaws.com:9080/openidm/managed/user')
+      req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json', 
+        'X-OpenIDM-Username' => 'enroll-app', 'X-OpenIDM-Password' => 'Passw0rd!')
+      data = {     mail: email, 
+                    sn: => last_name,
+                    userName: => user_name,
+                     password: password,
+                     givenName: first_name,
+                     statusFlag: system_flag,
+                     userType: account_role_key}
+      req.body = data.to_json
+      
+      res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+        http.request(req)
       end
-      builder.to_xml
+      res
     end
 
     LOOKUP_RESPONSE_NS = "http://xmlns.oracle.com/dcas/esb/useridentitymanage/service/xsd/v1"
