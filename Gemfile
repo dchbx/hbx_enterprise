@@ -14,6 +14,7 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'activesupport', '4.1.8'
 gem 'activemodel', '4.1.8'
+gem 'httparty'
 
 # Component requirements
 gem 'mongoid', '5.1.1'

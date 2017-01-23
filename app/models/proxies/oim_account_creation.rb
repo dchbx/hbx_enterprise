@@ -1,14 +1,16 @@
 module Proxies
   class OimAccountCreation < ::Proxies::SoapRequestBuilder
+    require 'httparty'
     ACCOUNT_NS = "http://xmlns.oracle.com/dcas/esb/useridentitymanage/service/xsd/v1"
 
     def request(data, timeout = 5)
-      code, body = super(create_body(data), timeout)
+      response = create_body(data)
+      code = response.has_key?("code") ? response["code"] : "200"
       case code.to_s
-      when "200"
-        extract_response_code(body)
-      else
-        [code, body]
+      when "200" # when success
+        ["201", response]
+      else # when error
+        [code, response]
       end
     end
 
@@ -40,44 +42,59 @@ module Proxies
       last_name = data["last_name"]
       email = data["email"]
       password = data["password"]
-      system_flag = data["system_flag"] 
+      system_flag = data["system_flag"]
       account_role = data["account_role"]
       user_name = data["username"]
       user_name ||= data["email"]
       account_role_key = account_role.blank? ? "individual" : account_role
-      user_role = USER_ROLE_MAPPING.fetch(account_role_key, INDIVIDUAL_ROLE_URI)
+      # user_role = USER_ROLE_MAPPING.fetch(account_role_key, INDIVIDUAL_ROLE_URI)
       system_flag_value = system_flag.blank? ? "1" : system_flag
-      uri = URI('http://ec2-52-5-17-62.compute-1.amazonaws.com:9080/openidm/managed/user')
-      req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json', 
-        'X-OpenIDM-Username' => 'enroll-app', 'X-OpenIDM-Password' => 'Passw0rd!')
-      data = {     mail: email, 
-                    sn: => last_name,
-                    userName: => user_name,
-                     password: password,
-                     givenName: first_name,
-                     statusFlag: system_flag,
-                     userType: account_role_key}
-      req.body = data.to_json
-      
-      res = Net::HTTP.start(uri.hostname, uri.port) do |http|
-        http.request(req)
-      end
-      res
+
+      request_data = {
+        mail: email.present? ? email.downcase : "",
+        givenName: first_name,
+        sn: last_name,
+        userName: user_name,
+        password: password,
+        userType: account_role_key.downcase,
+        statusFlag: system_flag
+      }
+
+      make_forge_rock_create_request(request_data)
+    end
+
+    def make_forge_rock_create_request(data)
+      config = YAML.load_file("#{Rails.root}/config/forgerock.yml")
+
+      headers = {
+        'Content-Type' => 'application/json',
+        'X-OpenIDM-Username' => config["forgerock"]["username"],
+        'X-OpenIDM-Password' => config["forgerock"]["password"],
+      }
+
+      response = HTTParty.post(
+        config["forgerock"]["url"],
+        :query => {"action" => "post"},
+        :body => data.to_json,
+        :headers => headers
+      )
+      response
     end
 
     LOOKUP_RESPONSE_NS = "http://xmlns.oracle.com/dcas/esb/useridentitymanage/service/xsd/v1"
 
-    def extract_response_code(body)
-      xml = Nokogiri::XML(body)
-      response_code = xml.at_xpath("//lrn:response_code", :lrn => LOOKUP_RESPONSE_NS)
-      return "503" if response_code.blank?
-      code_string = response_code.content.split("#").last
-      case code_string
-      when "SUCCESS"
-        ["201", ""]
-      else
-        ["500", (body || "")]
-      end
-    end
+    # def extract_response_code(data)
+      # xml = Nokogiri::XML(body)
+      # response_code = xml.at_xpath("//lrn:response_code", :lrn => LOOKUP_RESPONSE_NS)
+      # return "503" if response_code.blank?
+      # code_string = response_code.content.split("#").last
+      # code_string = "SUCCESS"
+      # case code_string
+      # when "SUCCESS"
+      # ["201", data]
+      # else
+        # ["500", (body || "")]
+      # end
+    # end
   end
 end

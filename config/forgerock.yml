@@ -1,0 +1,4 @@
+forgerock:
+  url: "http://ec2-52-5-17-62.compute-1.amazonaws.com:9080/openidm/managed/user"
+  username: ""
+  password: ""
