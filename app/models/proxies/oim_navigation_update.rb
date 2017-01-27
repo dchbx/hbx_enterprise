@@ -1,8 +1,8 @@
 module Proxies
   class OimNavigationUpdate < ::Proxies::SoapRequestBuilder
-    require 'httparty'
+    require 'faraday'
     ACCOUNT_NS = "http://xmlns.oracle.com/dcas/esb/useridentitymanage/service/xsd/v1"
-    
+
     def request(data, timeout = 5)
       response = create_body(data)
       code = response.has_key?("code") ? response["code"] : "200"
@@ -35,8 +35,8 @@ module Proxies
       make_forge_rock_update_request(request_data, user_name)
     end
 
-    def make_forge_rock_update_request(data, user_name) 
-      query = {
+    def make_forge_rock_update_request(data, user_name)
+      query_params = {
         "_action" => "patch",
         "_queryId" => "for-userName",
         "uid" => user_name,
@@ -48,29 +48,17 @@ module Proxies
         'X-OpenIDM-Password' => config["forgerock"]["password"]
       }
 
-      response = HTTParty.post(
-        config["forgerock"]["url"],
-        :query => query,
-        :body => request_data.to_json,
-        :headers => headers
-      )
+      response = Faraday.post do |request|
+        request.url @config['forgerock']['url']
+        request.headers = headers
+        request.params = query_params
+        request.body = data.to_json
+      end
 
-      response
+      response.body
     end
 
     LOOKUP_RESPONSE_NS = "http://xmlns.oracle.com/dcas/esb/useridentitymanage/service/xsd/v1"
 
-    def extract_response_code(body)
-      xml = Nokogiri::XML(body)
-      response_code = xml.at_xpath("//lrn:response_code", :lrn => LOOKUP_RESPONSE_NS)
-      return "503" if response_code.blank?
-      code_string = response_code.content.split("#").last
-      case code_string
-      when "SUCCESS"
-        ["200", ""]
-      else
-        ["500", (body || "")]
-      end
-    end
   end
 end

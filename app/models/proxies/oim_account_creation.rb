@@ -1,6 +1,6 @@
 module Proxies
   class OimAccountCreation < ::Proxies::SoapRequestBuilder
-    require 'httparty'
+    require 'faraday'
     ACCOUNT_NS = "http://xmlns.oracle.com/dcas/esb/useridentitymanage/service/xsd/v1"
 
     def request(data, timeout = 5)
@@ -72,29 +72,16 @@ module Proxies
         'X-OpenIDM-Password' => config["forgerock"]["password"],
       }
 
-      response = HTTParty.post(
-        config["forgerock"]["url"],
-        :query => {"action" => "post"},
-        :body => data.to_json,
-        :headers => headers
-      )
-      response
+      response = Faraday.post do |request|
+        request.url @config['forgerock']['url']
+        request.headers = headers
+        request.body = data.to_json
+      end
+
+      response.body
     end
 
     LOOKUP_RESPONSE_NS = "http://xmlns.oracle.com/dcas/esb/useridentitymanage/service/xsd/v1"
 
-    # def extract_response_code(data)
-      # xml = Nokogiri::XML(body)
-      # response_code = xml.at_xpath("//lrn:response_code", :lrn => LOOKUP_RESPONSE_NS)
-      # return "503" if response_code.blank?
-      # code_string = response_code.content.split("#").last
-      # code_string = "SUCCESS"
-      # case code_string
-      # when "SUCCESS"
-      # ["201", data]
-      # else
-        # ["500", (body || "")]
-      # end
-    # end
   end
 end
