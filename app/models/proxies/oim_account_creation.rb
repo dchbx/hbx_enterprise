@@ -73,7 +73,7 @@ module Proxies
       }
 
       response = Faraday.post do |request|
-        request.url @config['forgerock']['url']
+        request.url config['forgerock']['url']
         request.headers = headers
         request.body = data.to_json
       end
