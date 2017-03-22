@@ -17,7 +17,8 @@ class ExchangeInformation
     'case_query_url',
     'employer_xml_drop_url', 'legacy_employer_xml_drop_url',
     'pp_sftp_host', 'pp_sftp_username', 'pp_sftp_password',
-    'pp_sftp_employer_digest_path'
+    'pp_sftp_employer_digest_path',
+    'pp_sftp_enrollment_path'
   ]
 
   attr_reader :config

@@ -47,6 +47,7 @@ Eye.application 'eye_hbx_enterprise' do
   define_worker("residency_verification_listener", BUS_DIRECTORY, "bundle exec padrino r amqp/residency_verification_listener.rb -e production", true)
   define_worker("group_file_request_batcher", BUS_DIRECTORY, "bundle exec padrino r amqp/group_file_request_batcher.rb -e production", false)
   define_worker("employer_xml_drop_listener", BUS_DIRECTORY, "bundle exec padrino r amqp/employer_xml_drop_listener.rb -e production", true)
+  define_worker("payment_processor_enrollment_drop_listener", BUS_DIRECTORY, "bundle exec padrino r amqp/payment_processor_enrollment_drop_listener.rb -e production", true)
 #  define_worker("dcas_enrollment_provider", BUS_DIRECTORY, "bundle exec padrino r amqp/dcas_enrollment_provider.rb -e production", true)
 #  define_worker("dcas_enrollment_provider_scaler", BUS_DIRECTORY, "bundle exec padrino r amqp/dcas_enrollment_provider_scaler.rb -e production")
 
