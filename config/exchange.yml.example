@@ -1,0 +1,33 @@
+environment: "prod"
+hbx_id: "dc0"
+receiver_id: '999999999'
+osb_host: "https://esb-preprd.dchealthlink.com"
+osb_username: "ESB-SOA-KEY"
+osb_password: "ESB-SOA-PASS"
+osb_nonce: "ESB-SOA-NONCE"
+osb_created: "2014-11-02T18:40:36.185Z"
+invalid_argument_queue: 'dc0.errors.invalid_arguements'
+processing_failure_queue: 'dc0.errors.processing_failures'
+event_exchange: "dc0.prod.e.topic.events"
+event_publish_exchange: "dc0.prod.e.fanout.events"
+request_exchange: "dc0.prod.e.direct.requests"
+amqp_uri: "amqp://guest:guest@127.0.0.1:55671"
+account_search_url: "https://esb-preprd.dchealthlink.com/EnrollApp/SSO/ProxyService/LookUpUserInCuramPS"
+account_creation_url: "https://esb-preprd.dchealthlink.com/EnrollApp/SSO/ProxyService/UserIdentityManagePS"
+fars_url: "https://esb-preprd.dchealthlink.com/EnrollAppRIDPFarscmpService/BusinessService/EnrollAppRIDPFarscmpPS"
+ridp_url: "https://esb-preprd.dchealthlink.com/EnrollApp/RIDP/ProxyService/EnrollAppFedRIDPPS"
+vlp_url: "https://esb-preprd.dchealthlink.com/EnrollApp/VLP/ProxyService/EnrollAppFedVLPPS"
+ssa_url: "https://esb-preprd.dchealthlink.com/EnrollApp/SSA/ProxyService/EnrollAppSSAFedPS"
+residency_url: "https://esb-preprd.dchealthlink.com/LocalHub/VerificationService"
+case_query_url: "https://esb-preprd.dchealthlink.com/EnrollApp/SyncExternalFamilyVerification/ProxyService/SyncExternalFamilyVerfyPS"
+employer_xml_drop_url: "https://soa-preprod.dchbx.org:8001/soa-infra/services/EDI/GroupXMLV2CarrCmpService/groupxmlv2carrabcsimpl_client_ep"
+employer_xml_post_url: "https://soa-preprod.dchbx.org:8001/openhbx_b2b_endpoints/employer_digests"
+b2b_integration_api_key: "198237498327fasdfafe"
+legacy_employer_xml_drop_url: "https://soa-preprod.dchbx.org:8001/soa-infra/services/EDI/V1GroupXMLCarrCmpService/v1groupxml_client_ep"
+pp_sftp_host: "test.payment_processor_sftp.com"
+pp_sftp_username: "pp_test_user"
+pp_sftp_password: "pp_test_path"
+pp_sftp_employer_digest_path: "/test/"
+pp_sftp_enrollment_path: "/test/Updates/"
+legacy_carrier_mappings:
+  "bcbs": GHMSI

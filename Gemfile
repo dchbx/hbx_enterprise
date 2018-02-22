@@ -17,9 +17,6 @@ gem 'activemodel', '4.1.8'
 gem 'faraday', '0.11.0'
 
 # Component requirements
-gem 'mongoid', '5.1.1'
-gem 'bson', '4.0.4'
-gem 'origin', '2.2.0'
 gem 'haml', '4.0.6'
 
 # Test requirements

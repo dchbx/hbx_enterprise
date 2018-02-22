@@ -1,7 +1,0 @@
-development:
-  clients:
-    default:
-      hosts:
-        - localhost:27017
-      database: hbx_enterprise_development
-      options:
