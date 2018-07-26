@@ -2,6 +2,7 @@ module HbxEnterprise
   class App < Padrino::Application
     register Padrino::Mailer
     register Padrino::Helpers
+    register Config
 
     enable :sessions
 

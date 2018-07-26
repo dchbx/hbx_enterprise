@@ -34,6 +34,9 @@ gem 'forkr', '1.0.2'
 gem 'net-ssh', '2.9.1'
 gem 'net-sftp', '2.1.2'
 
+# configuration support
+gem "config", '~> 1.0.0'
+
 # Or Padrino Edge
 # gem 'padrino', :github => 'padrino/padrino-framework'
 
