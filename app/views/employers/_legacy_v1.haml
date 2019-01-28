@@ -8,11 +8,11 @@
   - if  active_broker.present?
     %ns1:broker
       %ns1:npn_id= active_broker[:npn]
-      %ns1:assignment_start_on= hiphen_saperated_date(active_broker[:start_on])
-  %ns1:open_enrollment_start= hiphen_saperated_date(plan_year[:open_enrollment_start])
-  %ns1:open_enrollment_end= hiphen_saperated_date(plan_year[:open_enrollment_end])
-  %ns1:plan_year_start= hiphen_saperated_date(plan_year[:plan_year_start])
-  %ns1:plan_year_end= hiphen_saperated_date(plan_year[:plan_year_end]) if plan_year[:plan_year_end]
+      %ns1:assignment_start_on= hyphen_separated_date(active_broker[:start_on])
+  %ns1:open_enrollment_start= hyphen_separated_date(plan_year[:open_enrollment_start])
+  %ns1:open_enrollment_end= hyphen_separated_date(plan_year[:open_enrollment_end])
+  %ns1:plan_year_start= hyphen_separated_date(plan_year[:plan_year_start])
+  %ns1:plan_year_end= hyphen_separated_date(plan_year[:plan_year_end]) if plan_year[:plan_year_end]
   %ns1:plans
     - elected_plans = plan_year[:elected_plans].select { |plan| plan[:carrier][:name] == carrier }.uniq
     - elected_plans.each do |plan|
@@ -23,7 +23,7 @@
         %ns1:carrier_name= plan[:carrier][:name]
         %ns1:plan_name= plan[:name]
         %ns1:coverage_type= plan[:coverage_type]
-        %ns1:original_effective_date= hiphen_saperated_date(plan_year[:plan_year_start])
+        %ns1:original_effective_date= hyphen_separated_date(plan_year[:plan_year_start])
   - if cv_hash[:contacts].present?
     - cv_hash[:contacts].each do |person|
       = partial "shared/vcard", :locals =>{:person => person, :organization => cv_hash}
