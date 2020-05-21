@@ -25,10 +25,14 @@ legacy_employer_xml_drop_url: "https://soa-preprod.dchbx.org:8001/soa-infra/serv
 nfp_integration_url: "http://"
 nfp_integration_user_id: '1'
 nfp_integration_password: 'password'
+b2b_integration_api_key: "some key"
 pp_sftp_host: "test.payment_processor_sftp.com"
 pp_sftp_username: "pp_test_user"
 pp_sftp_password: "pp_test_path"
 pp_sftp_employer_digest_path: "/test/"
 pp_sftp_enrollment_path: "/test/Updates/"
+pp_sftp_broker_digest_path: "/test/Brokers"
+pp_enable_broker_file_drop: false
+broker_xml_drop_url: "https://"
 legacy_carrier_mappings:
   "bcbs": GHMSI

@@ -18,6 +18,7 @@ class ExchangeInformation
     'employer_xml_drop_url', 'legacy_employer_xml_drop_url',
     'pp_sftp_host', 'pp_sftp_username', 'pp_sftp_password',
     'pp_sftp_employer_digest_path',
+    'broker_xml_drop_url', 'b2b_integration_api_key',
     'pp_sftp_enrollment_path',
     'legacy_carrier_mappings',
     'nfp_integration_url', 'nfp_integration_user_id', 'nfp_integration_password'
@@ -38,6 +39,14 @@ class ExchangeInformation
 
    def provide_legacy_employer_group_files?
     @drop_legacy_group_files ||= (config["drop_legacy_group_files"].to_s == "true")
+   end
+
+  def self.provide_legacy_broker_files_to_payment_processor?
+    self.instance.provide_legacy_broker_files_to_payment_processor?
+  end
+
+  def provide_legacy_broker_files_to_payment_processor?
+    @drop_broker_files_to_payment_processor ||= (config["pp_enable_broker_file_drop"].to_s == "true")
   end
 
   def ensure_configuration_values(conf)
@@ -74,6 +83,14 @@ class ExchangeInformation
 
   def use_soap_security?
     @use_soap_security ||= extract_soap_security_setting
+  end
+
+  def self.pp_sftp_broker_digest_path
+    self.instance.pp_sftp_broker_digest_path
+  end
+
+  def pp_sftp_broker_digest_path
+    config['pp_sftp_broker_digest_path'].to_s
   end
 
   def extract_soap_security_setting
