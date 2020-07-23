@@ -45,7 +45,11 @@
         %ns2:uri= "tel:+1-" + phone_number.gsub(/[^0-9]/,'').insert(-5, '-').insert(-9, '-')
   - else
     - phone = primary_office_location(organization[:office_locations])[:phone]
-    - if (phone[:phone_number].present?) && (phone[:phone_number].gsub(/[^0-9]/,'').length == 10)
+    - if phone.nil?
+      - phone = {}
+      - phone[:phone_type] = "work"
+      - phone_number = "0000000000"
+    - elsif (phone[:phone_number].present?) && (phone[:phone_number].gsub(/[^0-9]/,'').length == 10)
       - phone_number = phone[:phone_number]
     - elsif (phone[:phone_number].present?) && (phone[:phone_number].gsub(/[^0-9]/,'').length > 10)
       - phone_number = phone[:phone_number][0..9]
